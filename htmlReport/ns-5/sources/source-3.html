@@ -1,0 +1,172 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > MilestoneDto</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.ResultRush.dto</a>
+</div>
+
+<h1>Coverage Summary for Class: MilestoneDto (com.example.ResultRush.dto)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">MilestoneDto</td>
+<td class="coverageStat">
+  <span class="percent">
+    72.7%
+  </span>
+  <span class="absValue">
+    (8/11)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    75.9%
+  </span>
+  <span class="absValue">
+    (22/29)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">MilestoneDto$MilestoneDtoBuilder</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    75%
+  </span>
+  <span class="absValue">
+    (9/12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    76.7%
+  </span>
+  <span class="absValue">
+    (23/30)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.ResultRush.dto;
+&nbsp;
+&nbsp;import com.example.ResultRush.entity.Milestone;
+&nbsp;import com.example.ResultRush.entity.Priority;
+&nbsp;import com.example.ResultRush.service.MilestoneService;
+&nbsp;import lombok.AllArgsConstructor;
+&nbsp;import lombok.Builder;
+&nbsp;import lombok.Data;
+&nbsp;import lombok.NoArgsConstructor;
+&nbsp;
+&nbsp;import java.time.LocalDate;
+<b class="nc">&nbsp;</b>
+<b class="fc">&nbsp;@Data</b>
+<b class="fc">&nbsp;@AllArgsConstructor</b>
+<b class="fc">&nbsp;@NoArgsConstructor</b>
+<b class="fc">&nbsp;@Builder</b>
+<b class="nc">&nbsp;public class MilestoneDto {</b>
+<b class="nc">&nbsp;</b>
+<b class="fc">&nbsp;    private Integer id;</b>
+<b class="fc">&nbsp;    private String title;</b>
+<b class="fc">&nbsp;    private LocalDate deadline;</b>
+<b class="fc">&nbsp;    private Boolean isCompleted;</b>
+<b class="fc">&nbsp;    private Integer goalId;</b>
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;    public static Milestone toMilestone(MilestoneDto milestoneDto) {</b>
+<b class="fc">&nbsp;        var milestone = new Milestone();</b>
+<b class="fc">&nbsp;        milestone.setId(milestoneDto.getId());</b>
+<b class="fc">&nbsp;        milestone.setTitle(milestoneDto.getTitle());</b>
+<b class="fc">&nbsp;        milestone.setDeadline(milestoneDto.getDeadline());</b>
+<b class="fc">&nbsp;        milestone.setIsCompleted(milestoneDto.getIsCompleted());</b>
+<b class="fc">&nbsp;        return milestone;</b>
+&nbsp;    }
+<b class="nc">&nbsp;</b>
+<b class="nc">&nbsp;    public static MilestoneDto toMilestoneDto(Milestone milestone) {</b>
+<b class="fc">&nbsp;        var milestoneDto = new MilestoneDto();</b>
+<b class="fc">&nbsp;        milestoneDto.setId(milestone.getId());</b>
+<b class="fc">&nbsp;        milestoneDto.setTitle(milestone.getTitle());</b>
+<b class="fc">&nbsp;        milestoneDto.setDeadline(milestone.getDeadline());</b>
+<b class="fc">&nbsp;        milestoneDto.setIsCompleted(milestone.getIsCompleted());</b>
+<b class="fc">&nbsp;        milestoneDto.setGoalId(milestone.getGoal() == null ? null : milestone.getGoal().getId());</b>
+<b class="fc">&nbsp;        return milestoneDto;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-07-30 23:30</div>
+</div>
+</body>
+</html>

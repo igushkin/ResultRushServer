@@ -1,0 +1,176 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > MilestoneService</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.ResultRush.service</a>
+</div>
+
+<h1>Coverage Summary for Class: MilestoneService (com.example.ResultRush.service)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">MilestoneService</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    87.5%
+  </span>
+  <span class="absValue">
+    (7/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    80.6%
+  </span>
+  <span class="absValue">
+    (25/31)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.ResultRush.service;
+&nbsp;
+&nbsp;import com.example.ResultRush.configurations.UserPrincipal;
+&nbsp;import com.example.ResultRush.dto.MilestoneDto;
+&nbsp;import com.example.ResultRush.repository.GoalRepository;
+&nbsp;import com.example.ResultRush.repository.MilestoneRepository;
+&nbsp;import com.example.ResultRush.repository.UserRepository;
+&nbsp;import lombok.RequiredArgsConstructor;
+&nbsp;import org.springframework.security.core.context.SecurityContextHolder;
+&nbsp;import org.springframework.stereotype.Service;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;import java.util.stream.Collectors;
+&nbsp;
+&nbsp;@Service
+<b class="fc">&nbsp;@RequiredArgsConstructor</b>
+&nbsp;public class MilestoneService {
+&nbsp;
+&nbsp;    private final MilestoneRepository milestoneRepository;
+&nbsp;    private final GoalRepository goalRepository;
+&nbsp;    private final UserRepository userRepository;
+&nbsp;
+&nbsp;    public MilestoneDto create(MilestoneDto obj) {
+<b class="fc">&nbsp;        var milestone = MilestoneDto.toMilestone(obj);</b>
+<b class="fc">&nbsp;        var goal = goalRepository.findByIdAndUserId(obj.getGoalId(), getPrincipalId()).get();</b>
+<b class="fc">&nbsp;        var user = userRepository.findById(getPrincipalId()).get();</b>
+&nbsp;
+<b class="fc">&nbsp;        if (goal.getUser().getId() != user.getId()) {</b>
+<b class="nc">&nbsp;            throw new RuntimeException(&quot;Goal was not found&quot;);</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        milestone.setGoal(goal);</b>
+<b class="fc">&nbsp;        return MilestoneDto.toMilestoneDto(milestoneRepository.save(milestone));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public MilestoneDto update(MilestoneDto obj) {
+<b class="fc">&nbsp;        var milestone = milestoneRepository.findById(obj.getId()).get();</b>
+<b class="fc">&nbsp;        var goal = goalRepository.findById(obj.getGoalId()).get();</b>
+<b class="fc">&nbsp;        var user = userRepository.findById(getPrincipalId()).get();</b>
+&nbsp;
+<b class="fc">&nbsp;        if (goal.getUser().getId() != user.getId()) {</b>
+<b class="nc">&nbsp;            throw new RuntimeException(&quot;Goal was not found&quot;);</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        milestone.setTitle(obj.getTitle());</b>
+<b class="fc">&nbsp;        milestone.setIsCompleted(obj.getIsCompleted());</b>
+<b class="fc">&nbsp;        milestone.setDeadline(obj.getDeadline());</b>
+&nbsp;
+<b class="fc">&nbsp;        return MilestoneDto.toMilestoneDto(milestoneRepository.save(milestone));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public List&lt;MilestoneDto&gt; findAllByGoalId(Integer goalId) {
+<b class="fc">&nbsp;        return milestoneRepository.findAllByGoalIdAndGoal_UserId(goalId, getPrincipalId())</b>
+<b class="fc">&nbsp;                .stream()</b>
+<b class="fc">&nbsp;                .map(milestone -&gt; MilestoneDto.toMilestoneDto(milestone))</b>
+<b class="fc">&nbsp;                .collect(Collectors.toList());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private Integer getPrincipalId() {
+<b class="fc">&nbsp;        return ((UserPrincipal) (SecurityContextHolder.getContext().getAuthentication().getPrincipal())).getId();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public MilestoneDto getById(Integer id) {
+<b class="fc">&nbsp;        return MilestoneDto.toMilestoneDto(milestoneRepository</b>
+<b class="fc">&nbsp;                .findByIdAndGoal_UserId(id, getPrincipalId())</b>
+<b class="fc">&nbsp;                .get());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void delete(Integer id) {
+<b class="fc">&nbsp;        var milestone = milestoneRepository.findByIdAndGoal_UserId(id, getPrincipalId()).get();</b>
+<b class="fc">&nbsp;        milestoneRepository.delete(milestone);</b>
+<b class="nc">&nbsp;    }</b>
+<b class="nc">&nbsp;}</b>
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-07-30 23:30</div>
+</div>
+</body>
+</html>

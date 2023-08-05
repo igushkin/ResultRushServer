@@ -1,0 +1,196 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > WebSecurityConfig</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.ResultRush.configurations</a>
+</div>
+
+<h1>Coverage Summary for Class: WebSecurityConfig (com.example.ResultRush.configurations)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">WebSecurityConfig</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (6/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (28/28)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">WebSecurityConfig$$SpringCGLIB$$0</td>
+  </tr>
+  <tr>
+    <td class="name">WebSecurityConfig$$SpringCGLIB$$1</td>
+  </tr>
+  <tr>
+    <td class="name">WebSecurityConfig$$SpringCGLIB$$2</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (6/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (28/28)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.ResultRush.configurations;
+&nbsp;
+&nbsp;import com.example.ResultRush.configurations.Jwt.JwtAuthenticationFilter;
+&nbsp;import lombok.RequiredArgsConstructor;
+&nbsp;import org.springframework.context.annotation.Bean;
+&nbsp;import org.springframework.context.annotation.Configuration;
+&nbsp;import org.springframework.security.authentication.AuthenticationManager;
+&nbsp;import org.springframework.security.config.Customizer;
+&nbsp;import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+&nbsp;import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+&nbsp;import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+&nbsp;import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+&nbsp;import org.springframework.security.config.http.SessionCreationPolicy;
+&nbsp;import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+&nbsp;import org.springframework.security.crypto.password.PasswordEncoder;
+&nbsp;import org.springframework.security.web.SecurityFilterChain;
+&nbsp;import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+&nbsp;import org.springframework.web.cors.CorsConfiguration;
+&nbsp;import org.springframework.web.cors.CorsConfigurationSource;
+&nbsp;import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+&nbsp;
+&nbsp;import java.util.Arrays;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;@Configuration
+&nbsp;@EnableWebSecurity
+<b class="fc">&nbsp;@RequiredArgsConstructor</b>
+&nbsp;public class WebSecurityConfig {
+&nbsp;    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+&nbsp;    private final CustomUserDetailsService userDetailsService;
+&nbsp;    private final UnauthorizedHandler unauthorizedHandler;
+&nbsp;
+&nbsp;    @Bean
+&nbsp;    public SecurityFilterChain applicationSecurity(HttpSecurity http) throws Exception {
+<b class="fc">&nbsp;        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);</b>
+&nbsp;
+<b class="fc">&nbsp;        http</b>
+<b class="fc">&nbsp;                .cors(Customizer.withDefaults())</b>
+<b class="fc">&nbsp;                .csrf(AbstractHttpConfigurer::disable)</b>
+<b class="fc">&nbsp;                .sessionManagement(s -&gt; s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))</b>
+<b class="fc">&nbsp;                .formLogin(AbstractHttpConfigurer::disable)</b>
+<b class="fc">&nbsp;                .exceptionHandling(h -&gt; h.authenticationEntryPoint(unauthorizedHandler))</b>
+<b class="fc">&nbsp;                .securityMatcher(&quot;/**&quot;)</b>
+<b class="fc">&nbsp;                .authorizeHttpRequests(registry -&gt; registry</b>
+<b class="fc">&nbsp;                        .requestMatchers(&quot;/login&quot;).permitAll()</b>
+<b class="fc">&nbsp;                        .requestMatchers(&quot;/register&quot;).permitAll()</b>
+<b class="fc">&nbsp;                        .anyRequest().authenticated()</b>
+&nbsp;                )
+<b class="fc">&nbsp;                .httpBasic(Customizer.withDefaults());</b>
+<b class="fc">&nbsp;        return http.build();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Bean
+&nbsp;    public PasswordEncoder passwordEncoder() {
+<b class="fc">&nbsp;        return new BCryptPasswordEncoder();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Bean
+&nbsp;    public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
+<b class="fc">&nbsp;        var builder = http.getSharedObject(AuthenticationManagerBuilder.class);</b>
+<b class="fc">&nbsp;        builder</b>
+<b class="fc">&nbsp;                .userDetailsService(userDetailsService)</b>
+<b class="fc">&nbsp;                .passwordEncoder(passwordEncoder());</b>
+<b class="fc">&nbsp;        return builder.build();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Bean
+&nbsp;    CorsConfigurationSource corsConfigurationSource() {
+<b class="fc">&nbsp;        CorsConfiguration configuration = new CorsConfiguration();</b>
+<b class="fc">&nbsp;        configuration.setAllowedOrigins(Arrays.asList(&quot;http://localhost:4200&quot;, &quot;https://resultrushfront.azurewebsites.net&quot;));</b>
+<b class="fc">&nbsp;        configuration.setAllowedMethods(Arrays.asList(&quot;*&quot;));</b>
+<b class="fc">&nbsp;        configuration.setAllowedHeaders(List.of(&quot;*&quot;));</b>
+<b class="fc">&nbsp;        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();</b>
+<b class="fc">&nbsp;        source.registerCorsConfiguration(&quot;/**&quot;, configuration);</b>
+<b class="fc">&nbsp;        return source;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-07-30 23:30</div>
+</div>
+</body>
+</html>

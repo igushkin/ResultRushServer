@@ -1,0 +1,189 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > GoalDto</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.ResultRush.dto</a>
+</div>
+
+<h1>Coverage Summary for Class: GoalDto (com.example.ResultRush.dto)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">GoalDto</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (18/18)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (39/39)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">GoalDto$GoalDtoBuilder</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (19/19)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (40/40)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.ResultRush.dto;
+&nbsp;
+&nbsp;import com.example.ResultRush.entity.Goal;
+&nbsp;import lombok.AllArgsConstructor;
+&nbsp;import lombok.Builder;
+&nbsp;import lombok.Data;
+&nbsp;import lombok.NoArgsConstructor;
+&nbsp;
+&nbsp;import java.time.LocalDate;
+&nbsp;
+<b class="fc">&nbsp;@Data</b>
+<b class="fc">&nbsp;@AllArgsConstructor</b>
+<b class="fc">&nbsp;@NoArgsConstructor</b>
+<b class="fc">&nbsp;@Builder</b>
+&nbsp;public class GoalDto {
+<b class="fc">&nbsp;    private Integer id;</b>
+<b class="fc">&nbsp;    private String title;</b>
+<b class="fc">&nbsp;    private String description;</b>
+<b class="fc">&nbsp;    private Boolean isCompleted = false;</b>
+<b class="fc">&nbsp;    private LocalDate deadline;</b>
+<b class="fc">&nbsp;    private Integer categoryId;</b>
+<b class="fc">&nbsp;    private Integer priorityId;</b>
+<b class="fc">&nbsp;    private CategoryDto category;</b>
+<b class="fc">&nbsp;    private PriorityDto priority;</b>
+<b class="fc">&nbsp;    private Integer completedMilestones;</b>
+<b class="fc">&nbsp;    private Integer uncompletedMilestones;</b>
+<b class="fc">&nbsp;    private Integer userId;</b>
+&nbsp;
+&nbsp;    public static Goal toGoal(GoalDto goalDto) {
+<b class="fc">&nbsp;        var goal = new Goal();</b>
+<b class="fc">&nbsp;        goal.setId(goalDto.getId());</b>
+<b class="fc">&nbsp;        goal.setTitle(goalDto.getTitle());</b>
+<b class="fc">&nbsp;        goal.setDescription(goalDto.getDescription());</b>
+<b class="fc">&nbsp;        goal.setDeadline(goalDto.getDeadline());</b>
+<b class="fc">&nbsp;        goal.setIsCompleted(goalDto.getIsCompleted());</b>
+&nbsp;
+<b class="fc">&nbsp;        return goal;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public static GoalDto toGoalDto(Goal goal) {
+<b class="fc">&nbsp;        var goalDto = new GoalDto();</b>
+<b class="fc">&nbsp;        goalDto.setId(goal.getId());</b>
+<b class="fc">&nbsp;        goalDto.setTitle(goal.getTitle());</b>
+<b class="fc">&nbsp;        goalDto.setDescription(goal.getDescription());</b>
+<b class="fc">&nbsp;        goalDto.setDeadline(goal.getDeadline());</b>
+<b class="fc">&nbsp;        goalDto.setIsCompleted(goal.getIsCompleted());</b>
+<b class="fc">&nbsp;        if (goal.getCategory() != null) {</b>
+<b class="fc">&nbsp;            goalDto.setCategoryId(goal.getCategory().getId());</b>
+<b class="fc">&nbsp;            goalDto.setCategory(CategoryDto.toCategoryDto(goal.getCategory()));</b>
+&nbsp;        }
+<b class="fc">&nbsp;        if (goal.getPriority() != null) {</b>
+<b class="fc">&nbsp;            goalDto.setPriorityId(goal.getPriority().getId());</b>
+<b class="fc">&nbsp;            goalDto.setPriority(PriorityDto.toPriorityDto(goal.getPriority()));</b>
+&nbsp;        }
+<b class="fc">&nbsp;        goalDto.setCompletedMilestones(goal.getCompletedMilestones());</b>
+<b class="fc">&nbsp;        goalDto.setUncompletedMilestones(goal.getUncompletedMilestones());</b>
+<b class="fc">&nbsp;        goalDto.setUserId(goal.getUser().getId());</b>
+<b class="fc">&nbsp;        return goalDto;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-07-30 23:30</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,225 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > GoalService</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.ResultRush.service</a>
+</div>
+
+<h1>Coverage Summary for Class: GoalService (com.example.ResultRush.service)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">GoalService</td>
+<td class="coverageStat">
+  <span class="percent">
+    75%
+  </span>
+  <span class="absValue">
+    (6/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    88.9%
+  </span>
+  <span class="absValue">
+    (40/45)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">GoalService$$SpringCGLIB$$0</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    75%
+  </span>
+  <span class="absValue">
+    (6/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    88.9%
+  </span>
+  <span class="absValue">
+    (40/45)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.ResultRush.service;
+&nbsp;
+&nbsp;import com.example.ResultRush.configurations.UserPrincipal;
+&nbsp;import com.example.ResultRush.dto.GoalDto;
+&nbsp;import com.example.ResultRush.entity.Category;
+&nbsp;import com.example.ResultRush.entity.Goal;
+&nbsp;import com.example.ResultRush.entity.Priority;
+&nbsp;import com.example.ResultRush.entity.Usr;
+&nbsp;import com.example.ResultRush.model.AllGoalsStat;
+&nbsp;import com.example.ResultRush.repository.*;
+&nbsp;import lombok.RequiredArgsConstructor;
+&nbsp;import org.springframework.security.core.context.SecurityContextHolder;
+&nbsp;import org.springframework.stereotype.Service;
+&nbsp;import org.springframework.transaction.annotation.Transactional;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;import java.util.stream.Collectors;
+&nbsp;
+&nbsp;@Service
+<b class="fc">&nbsp;@RequiredArgsConstructor</b>
+&nbsp;public class GoalService {
+&nbsp;
+&nbsp;    private final GoalRepository goalRepository;
+&nbsp;    private final CategoryRepository categoryRepository;
+&nbsp;    private final PriorityRepository priorityRepository;
+&nbsp;    private final MilestoneRepository milestoneRepository;
+&nbsp;    private final UserRepository userRepository;
+&nbsp;
+&nbsp;    public GoalDto create(GoalDto obj) {
+<b class="fc">&nbsp;        Category category = null;</b>
+<b class="fc">&nbsp;        Priority priority = null;</b>
+<b class="fc">&nbsp;        Usr user = userRepository.findById(getPrincipalId()).get();</b>
+&nbsp;
+<b class="fc">&nbsp;        if (obj.getCategoryId() != null) {</b>
+<b class="fc">&nbsp;            category = categoryRepository.findByIdAndUserId(obj.getCategoryId(), getPrincipalId()).get();</b>
+&nbsp;        }
+<b class="fc">&nbsp;        if (obj.getPriorityId() != null) {</b>
+<b class="fc">&nbsp;            priority = priorityRepository.findByIdAndUserId(obj.getPriorityId(), getPrincipalId()).get();</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        var goal = GoalDto.toGoal(obj);</b>
+<b class="fc">&nbsp;        goal.setCategory(category);</b>
+<b class="fc">&nbsp;        goal.setPriority(priority);</b>
+<b class="fc">&nbsp;        goal.setUser(user);</b>
+&nbsp;
+<b class="fc">&nbsp;        return GoalDto.toGoalDto(goalRepository.save(goal));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public GoalDto update(GoalDto obj) {
+<b class="fc">&nbsp;        Goal goal = goalRepository.findByIdAndUserId(obj.getId(), getPrincipalId()).get();</b>
+<b class="fc">&nbsp;        Category category = null;</b>
+<b class="fc">&nbsp;        Priority priority = null;</b>
+&nbsp;
+<b class="fc">&nbsp;        if (obj.getCategoryId() != null) {</b>
+<b class="fc">&nbsp;            category = categoryRepository.findByIdAndUserId(obj.getCategoryId(), getPrincipalId()).get();</b>
+&nbsp;        }
+<b class="fc">&nbsp;        if (obj.getPriorityId() != null) {</b>
+<b class="fc">&nbsp;            priority = priorityRepository.findByIdAndUserId(obj.getPriorityId(), getPrincipalId()).get();</b>
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;        goal.setTitle(obj.getTitle());</b>
+<b class="fc">&nbsp;        goal.setDescription(obj.getDescription());</b>
+<b class="fc">&nbsp;        goal.setDeadline(obj.getDeadline());</b>
+<b class="fc">&nbsp;        goal.setCategory(category);</b>
+<b class="fc">&nbsp;        goal.setPriority(priority);</b>
+&nbsp;
+<b class="fc">&nbsp;        return GoalDto.toGoalDto(goalRepository.save(goal));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    public GoalDto getById(Integer id) {
+<b class="nc">&nbsp;        return GoalDto.toGoalDto(goalRepository.findByIdAndUserId(id, getPrincipalId()).get());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    public List&lt;GoalDto&gt; getAll() {
+<b class="nc">&nbsp;        return goalRepository.findAllByUserId(getPrincipalId())</b>
+<b class="nc">&nbsp;                .stream()</b>
+<b class="nc">&nbsp;                .map(x -&gt; GoalDto.toGoalDto(x))</b>
+<b class="nc">&nbsp;                .collect(Collectors.toList());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Transactional
+&nbsp;    public void delete(Integer id) {
+<b class="fc">&nbsp;        var goal = goalRepository.findByIdAndUserId(id, getPrincipalId()).get();</b>
+<b class="fc">&nbsp;        milestoneRepository.deleteAllByGoalIdAndGoal_UserId(id, getPrincipalId());</b>
+<b class="fc">&nbsp;        goalRepository.delete(goal);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public AllGoalsStat getStat() {
+<b class="fc">&nbsp;        var res = goalRepository.countTotalGoalsByStatus(getPrincipalId());</b>
+&nbsp;
+<b class="fc">&nbsp;        var completedCount = 0;</b>
+<b class="fc">&nbsp;        var uncompletedCount = 0;</b>
+&nbsp;
+<b class="fc">&nbsp;        for (var r : res) {</b>
+<b class="fc">&nbsp;            if (r.getIsCompleted()) {</b>
+<b class="fc">&nbsp;                completedCount = r.getAmount();</b>
+&nbsp;            } else {
+<b class="fc">&nbsp;                uncompletedCount = r.getAmount();</b>
+&nbsp;            }
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+<b class="fc">&nbsp;        var stat = new AllGoalsStat(completedCount, uncompletedCount);</b>
+&nbsp;
+<b class="fc">&nbsp;        return stat;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private Integer getPrincipalId() {
+<b class="fc">&nbsp;        return ((UserPrincipal) (SecurityContextHolder.getContext().getAuthentication().getPrincipal())).getId();</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-07-30 23:30</div>
+</div>
+</body>
+</html>
