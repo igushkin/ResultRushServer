@@ -22,14 +22,8 @@ public class AuthController {
         return authService.attemptLogin(request.getLogin(), request.getPassword());
     }
 
-
     @PostMapping("/register")
     public boolean register(@RequestBody LoginRequest loginRequest) {
         return authService.register(loginRequest.getLogin(), loginRequest.getPassword());
-    }
-
-    @GetMapping("/get")
-    public String login() {
-        return "Hi!";
     }
 }
