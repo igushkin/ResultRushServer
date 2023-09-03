@@ -51,7 +51,7 @@ public class PriorityService {
     }
 
     public List<PriorityDto> getAll() {
-        return priorityRepository.findAllByUserId(getPrincipalId())
+        return priorityRepository.findAllByUserIdOrderById(getPrincipalId())
                 .stream()
                 .map(x -> PriorityDto.toPriorityDto(x))
                 .collect(Collectors.toList());

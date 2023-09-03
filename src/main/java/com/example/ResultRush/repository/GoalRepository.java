@@ -28,5 +28,5 @@ public interface GoalRepository extends JpaRepository<Goal, Integer> {
 
     Optional<Goal> findByIdAndUserId(Integer id, Integer userId);
 
-    List<Goal> findAllByUserId(Integer userId);
+    List<Goal> findAllByUserIdOrderById(Integer userId);
 }

@@ -74,7 +74,7 @@ public class GoalService {
 
 
     public List<GoalDto> getAll() {
-        return goalRepository.findAllByUserId(getPrincipalId())
+        return goalRepository.findAllByUserIdOrderById(getPrincipalId())
                 .stream()
                 .map(x -> GoalDto.toGoalDto(x))
                 .collect(Collectors.toList());

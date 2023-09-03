@@ -50,7 +50,7 @@ public class MilestoneService {
     }
 
     public List<MilestoneDto> findAllByGoalId(Integer goalId) {
-        return milestoneRepository.findAllByGoalIdAndGoal_UserId(goalId, getPrincipalId())
+        return milestoneRepository.findAllByGoalIdAndGoal_UserIdOrderById(goalId, getPrincipalId())
                 .stream()
                 .map(milestone -> MilestoneDto.toMilestoneDto(milestone))
                 .collect(Collectors.toList());

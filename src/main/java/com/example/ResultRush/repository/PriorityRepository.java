@@ -11,5 +11,5 @@ import java.util.Optional;
 public interface PriorityRepository extends JpaRepository<Priority, Integer> {
     Optional<Priority> findByIdAndUserId(Integer id, Integer userId);
 
-    List<Priority> findAllByUserId(Integer userId);
+    List<Priority> findAllByUserIdOrderById(Integer userId);
 }
