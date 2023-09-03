@@ -2,15 +2,9 @@ package com.example.ResultRush.service;
 
 import com.example.ResultRush.configurations.Jwt.JwtIssuer;
 import com.example.ResultRush.configurations.UserPrincipal;
-import com.example.ResultRush.entity.Category;
-import com.example.ResultRush.entity.Goal;
-import com.example.ResultRush.entity.Milestone;
-import com.example.ResultRush.entity.Usr;
+import com.example.ResultRush.entity.*;
 import com.example.ResultRush.model.LoginResponse;
-import com.example.ResultRush.repository.CategoryRepository;
-import com.example.ResultRush.repository.GoalRepository;
-import com.example.ResultRush.repository.MilestoneRepository;
-import com.example.ResultRush.repository.UserRepository;
+import com.example.ResultRush.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -33,6 +27,7 @@ public class AuthService {
     private final CategoryRepository categoryRepository;
     private final GoalRepository goalRepository;
     private final MilestoneRepository milestoneRepository;
+    private final PriorityRepository priorityRepository;
 
     public LoginResponse attemptLogin(String login, String password) {
         var authentication = authenticationManager.authenticate(
@@ -70,16 +65,29 @@ public class AuthService {
         var sampleCategory = Category.builder()
                 .title("Sample Category")
                 .color("#83fd23")
+                .completedGoals(0)
+                .uncompletedGoals(0)
                 .user(user)
                 .build();
 
         sampleCategory = categoryRepository.save(sampleCategory);
 
+        var samplePriority = Priority.builder()
+                .title("Important")
+                .user(user)
+                .build();
+
+        priorityRepository.save(samplePriority);
+
         var sampleGoal = Goal.builder()
                 .title("Sample goal")
+                .isCompleted(false)
+                .completedMilestones(0)
+                .uncompletedMilestones(0)
                 .description("Here you can explain why this goal is important to you")
                 .deadline(LocalDateTime.now().plusMonths(1).toInstant(ZoneOffset.UTC))
                 .category(sampleCategory)
+                .priority(samplePriority)
                 .user(user)
                 .build();
 
